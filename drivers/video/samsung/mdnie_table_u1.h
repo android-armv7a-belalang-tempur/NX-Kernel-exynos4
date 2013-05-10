@@ -1012,7 +1012,7 @@ static const unsigned short tune_warm_outdoor[] = {
 	END_SEQ, 0x0000,
 };
 
-struct mdnie_tunning_info etc_table[CABC_MAX][OUTDOOR_MAX][TONE_MAX] = {
+static struct mdnie_tunning_info etc_table[CABC_MAX][OUTDOOR_MAX][TONE_MAX] = {
 	{
 		{
 			{"NORMAL",		NULL},
@@ -1027,7 +1027,7 @@ struct mdnie_tunning_info etc_table[CABC_MAX][OUTDOOR_MAX][TONE_MAX] = {
 	}
 };
 
-struct mdnie_tunning_info tunning_table[CABC_MAX][MODE_MAX][SCENARIO_MAX] = {
+static struct mdnie_tunning_info tunning_table[CABC_MAX][MODE_MAX][SCENARIO_MAX] = {
 	{
 		{
 			{"DYNAMIC_UI",		tune_dynamic_ui},
@@ -1069,7 +1069,7 @@ struct mdnie_tunning_info tunning_table[CABC_MAX][MODE_MAX][SCENARIO_MAX] = {
 	}
 };
 
-struct mdnie_tunning_info camera_table[OUTDOOR_MAX] = {
+static  struct mdnie_tunning_info camera_table[OUTDOOR_MAX] = {
 	{"CAMERA",		tune_camera},
 	{"CAMERA_OUTDOOR",	tune_camera_outdoor},
 };
