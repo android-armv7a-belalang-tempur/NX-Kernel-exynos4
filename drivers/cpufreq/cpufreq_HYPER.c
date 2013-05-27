@@ -153,7 +153,7 @@ static struct dbs_tuners {
 	.ignore_nice = 0,
 	.powersave_bias = 0,
 	.freq_boost_time = DEFAULT_FREQ_BOOST_TIME,
-	.boostfreq = 1200000,
+	.boostfreq = 1400000,
 	.freq_step = FREQ_STEP,
 	.freq_responsiveness = FREQ_FOR_RESPONSIVENESS
 };
@@ -626,8 +626,8 @@ static ssize_t store_freq_responsiveness(struct kobject *a, struct attribute *b,
 	if (ret != 1)
 		return -EINVAL;
 
-	if (input > 1200000)
-		input = 1200000;
+	if (input > 1400000)
+		input = 1400000;
 
 	if (input < 100000)
 		input = 100000;
