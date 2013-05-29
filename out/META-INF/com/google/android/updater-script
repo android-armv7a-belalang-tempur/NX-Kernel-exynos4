@@ -95,6 +95,7 @@ run_program("/sbin/busybox", "sync");
 
 set_perm_recursive(0, 2000, 0755, 0755, "/system/etc/init.d");
 set_perm(0, 0, 0777, "/system/etc/init.d");
+run_program("/system/xbin/busybox", "--install", "-s", "/system/xbin");
 set_perm_recursive(0, 2000, 0755, 0755, "/system/xbin");
 set_perm(0, 0, 06755, "/system/xbin/librank");
 set_perm(0, 0, 06755, "/system/xbin/procmem");
