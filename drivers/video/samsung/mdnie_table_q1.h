@@ -4,7 +4,7 @@
 #include "mdnie.h"
 
 
-static const unsigned short tune_dynamic_gallery[] = {
+static unsigned short tune_dynamic_gallery[] = {
 	/*start Q1 dynamic gallery */
 	0x0001, 0x0040, /*SCR HDTR */
 	0x002c, 0x0fff, /*DNR bypass 0x003C */
@@ -58,7 +58,7 @@ static const unsigned short tune_dynamic_gallery[] = {
 	END_SEQ, 0x0000,
 };
 
-static const unsigned short tune_dynamic_ui[] = {
+static unsigned short tune_dynamic_ui[] = {
 	/*start Q1 dynamic ui */
 	0x0001, 0x0040, /*SCR HDTR */
 	0x002c, 0x0fff, /*DNR bypass 0x003C */
@@ -112,7 +112,7 @@ static const unsigned short tune_dynamic_ui[] = {
 	END_SEQ, 0x0000,
 };
 
-static const unsigned short tune_dynamic_video[] = {
+static unsigned short tune_dynamic_video[] = {
 	/*start Q1 dynamic video */
 	0x0001, 0x0040, /*SCR HDTR */
 	0x002c, 0x0fff, /*DNR bypass 0x003C */
@@ -166,7 +166,7 @@ static const unsigned short tune_dynamic_video[] = {
 	END_SEQ, 0x0000,
 };
 
-static const unsigned short tune_dynamic_vt[] = {
+static unsigned short tune_dynamic_vt[] = {
 	/*start Q1 dynamic vt */
 	0x0001, 0x0040, /*SCR HDTR */
 	0x002c, 0x0fff,	/*DNR dirTh */
@@ -220,7 +220,7 @@ static const unsigned short tune_dynamic_vt[] = {
 	END_SEQ, 0x0000,
 };
 
-static const unsigned short tune_movie_gallery[] = {
+static unsigned short tune_movie_gallery[] = {
 	/*start Q1 movie gallery */
 	0x0001, 0x0040, /*SCR HDTR */
 	0x002c, 0x0fff, /*DNR bypass 0x003C */
@@ -271,7 +271,7 @@ static const unsigned short tune_movie_gallery[] = {
 	END_SEQ, 0x0000,
 };
 
-static const unsigned short tune_movie_ui[] = {
+static unsigned short tune_movie_ui[] = {
 	/*start Q1 movie ui */
 	0x0001, 0x0040, /*SCR HDTR */
 	0x002c, 0x0fff, /*DNR bypass 0x003C */
@@ -322,7 +322,7 @@ static const unsigned short tune_movie_ui[] = {
 	END_SEQ, 0x0000,
 };
 
-static const unsigned short tune_movie_video[] = {
+static unsigned short tune_movie_video[] = {
 	/*start Q1 movie video */
 	0x0001, 0x0040, /*SCR HDTR */
 	0x002c, 0x0fff, /*DNR bypass 0x003C */
@@ -373,7 +373,7 @@ static const unsigned short tune_movie_video[] = {
 	END_SEQ, 0x0000,
 };
 
-static const unsigned short tune_movie_vt[] = {
+static unsigned short tune_movie_vt[] = {
 	/*start Q1 movie vt */
 	0x0001, 0x0040, /*SCR HDTR */
 	0x002c, 0x0fff, /*DNR dirTh */
@@ -426,7 +426,7 @@ static const unsigned short tune_movie_vt[] = {
 	END_SEQ, 0x0000,
 };
 
-static const unsigned short tune_standard_gallery[] = {
+static unsigned short tune_standard_gallery[] = {
 	/*start Q1 standard gallery */
 	0x0001, 0x0040, /*SCR HDTR */
 	0x002c, 0x0fff, /*DNR bypass 0x003C */
@@ -480,7 +480,7 @@ static const unsigned short tune_standard_gallery[] = {
 	END_SEQ, 0x0000,
 };
 
-static const unsigned short tune_standard_ui[] = {
+static unsigned short tune_standard_ui[] = {
 	/*start Q1 standard ui */
 	0x0001, 0x0040, /*SCR HDTR */
 	0x002c, 0x0fff, /*DNR bypass 0x003C */
@@ -534,7 +534,7 @@ static const unsigned short tune_standard_ui[] = {
 	END_SEQ, 0x0000,
 };
 
-static const unsigned short tune_standard_video[] = {
+static unsigned short tune_standard_video[] = {
 	/*start Q1 standard video */
 	0x0001, 0x0040, /*SCR HDTR */
 	0x002c, 0x0fff, /*DNR bypass 0x003C */
@@ -588,7 +588,7 @@ static const unsigned short tune_standard_video[] = {
 	END_SEQ, 0x0000,
 };
 
-static const unsigned short tune_standard_vt[] = {
+static unsigned short tune_standard_vt[] = {
 	/*start Q1 standard vt */
 	0x0001, 0x0040, /*SCR HDTR */
 	0x002c, 0x0fff, /*DNR dirTh */
@@ -642,7 +642,7 @@ static const unsigned short tune_standard_vt[] = {
 	END_SEQ, 0x0000,
 };
 
-static const unsigned short tune_natural_gallery[] = {
+static unsigned short tune_natural_gallery[] = {
 	/*start Q1 natural gallery */
 	0x0001, 0x0040, /*SCR HDTR */
 	0x002c, 0x0fff, /*DNR bypass 0x003C */
@@ -696,7 +696,7 @@ static const unsigned short tune_natural_gallery[] = {
 	END_SEQ, 0x0000,
 };
 
-static const unsigned short tune_natural_ui[] = {
+static unsigned short tune_natural_ui[] = {
 	/*start Q1 natural video */
 	0x0001, 0x0040, /*SCR HDTR */
 	0x002c, 0x0fff, /*DNR bypass 0x003C */
@@ -750,7 +750,7 @@ static const unsigned short tune_natural_ui[] = {
 	END_SEQ, 0x0000,
 };
 
-static const unsigned short tune_natural_video[] = {
+static unsigned short tune_natural_video[] = {
 	/*start Q1 natural video */
 	0x0001, 0x0040, /*SCR HDTR */
 	0x002c, 0x0fff, /*DNR bypass 0x003C */
@@ -804,7 +804,7 @@ static const unsigned short tune_natural_video[] = {
 	END_SEQ, 0x0000,
 };
 
-static const unsigned short tune_natural_vt[] = {
+static unsigned short tune_natural_vt[] = {
 	/*start Q1 natural vt */
 	0x0001, 0x0040, /*SCR HDTR */
 	0x002c, 0x0fff, /*DNR dirTh */
@@ -858,7 +858,7 @@ static const unsigned short tune_natural_vt[] = {
 	END_SEQ, 0x0000,
 };
 
-static const unsigned short tune_camera[] = {
+static unsigned short tune_camera[] = {
 	/*start */
 	0x0001, 0x0040, /*SCR HDTR */
 	0x002c, 0x0fff, /*DNR bypass 0x003C */
@@ -912,7 +912,7 @@ static const unsigned short tune_camera[] = {
 	END_SEQ, 0x0000,
 };
 
-static const unsigned short tune_camera_outdoor[] = {
+static unsigned short tune_camera_outdoor[] = {
 	/*start */
 	0x0001, 0x0042, /*SCR HDTR OVE */
 	0x002c, 0x0fff, /*DNR bypass 0x003C */
@@ -967,7 +967,7 @@ static const unsigned short tune_camera_outdoor[] = {
 	END_SEQ, 0x0000,
 };
 
-static const unsigned short tune_cold[] = {
+static unsigned short tune_cold[] = {
 	/*start Q1 cold */
 	0x0001, 0x0044, /*SCR MCM HDTR */
 	0x005b, 0x0064, /*MCM 10000K */
@@ -978,7 +978,7 @@ static const unsigned short tune_cold[] = {
 	END_SEQ, 0x0000,
 };
 
-static const unsigned short tune_cold_outdoor[] = {
+static unsigned short tune_cold_outdoor[] = {
 	/*start Q1 cold outdoor */
 	0x0001, 0x0046, /*SCR MCM HDTR OVE */
 	0x0054, 0x6050, /*OVE LIGHTNESS CHROMA */
@@ -990,7 +990,7 @@ static const unsigned short tune_cold_outdoor[] = {
 	END_SEQ, 0x0000,
 };
 
-static const unsigned short tune_normal_outdoor[] = {
+static unsigned short tune_normal_outdoor[] = {
 	/*start Q1 outdoor */
 	0x0001, 0x0042, /*SCR HDTR OVE */
 	0x0054, 0x6050, /*OVE LIGHTNESS CHROMA */
@@ -999,7 +999,7 @@ static const unsigned short tune_normal_outdoor[] = {
 	END_SEQ, 0x0000,
 };
 
-static const unsigned short tune_warm[] = {
+static unsigned short tune_warm[] = {
 	/*start Q1 warm */
 	0x0001, 0x0044, /*SCR MCM HDTR */
 	0x005b, 0x0028, /*MCM 4000K */
@@ -1010,7 +1010,7 @@ static const unsigned short tune_warm[] = {
 	END_SEQ, 0x0000,
 };
 
-static const unsigned short tune_warm_outdoor[] = {
+static unsigned short tune_warm_outdoor[] = {
 	/*start Q1 warm outdoor */
 	0x0001, 0x0046, /*SCR MCM HDTR OVE */
 	0x0054, 0x6050, /*OVE LIGHTNESS CHROMA */
@@ -1022,7 +1022,7 @@ static const unsigned short tune_warm_outdoor[] = {
 	END_SEQ, 0x0000,
 };
 
-static const unsigned short tune_normal[] = {
+static unsigned short tune_normal[] = {
 	/*start Q1 normal */
 	0x0001, 0x0044, /*SCR MCM HDTR */
 	0x005b, 0x0028, /*MCM 4000K */
@@ -1036,14 +1036,14 @@ static const unsigned short tune_normal[] = {
 static struct mdnie_tunning_info etc_table[CABC_MAX][OUTDOOR_MAX][TONE_MAX] = {
 	{
 		{
-			{"NORMAL",		tune_normal},
-			{"WARM",		tune_warm},
-			{"COLD",		tune_cold},
+			{"NORMAL",		(unsigned short *)&tune_normal},
+			{"WARM",		(unsigned short *)&tune_warm},
+			{"COLD",		(unsigned short *)&tune_cold},
 		},
 		{
-			{"NORMAL_OUTDOOR",	tune_normal_outdoor},
-			{"WARM_OUTDOOR",	tune_warm_outdoor},
-			{"COLD_OUTDOOR",	tune_cold_outdoor},
+			{"NORMAL_OUTDOOR",	(unsigned short *)&tune_normal_outdoor},
+			{"WARM_OUTDOOR",	(unsigned short *)&tune_warm_outdoor},
+			{"COLD_OUTDOOR",	(unsigned short *)&tune_cold_outdoor},
 		},
 	}
 };
@@ -1051,48 +1051,48 @@ static struct mdnie_tunning_info etc_table[CABC_MAX][OUTDOOR_MAX][TONE_MAX] = {
 static struct mdnie_tunning_info tunning_table[CABC_MAX][MODE_MAX][SCENARIO_MAX] = {
 	{
 		{
-			{"DYNAMIC_UI",		tune_dynamic_ui},
-			{"DYNAMIC_VIDEO",	tune_dynamic_video},
-			{"DYNAMIC_VIDEO",	tune_dynamic_video},
-			{"DYNAMIC_VIDEO",	tune_dynamic_video},
-			{"CAMERA",		tune_camera},
-			{"DYNAMIC_UI",		tune_dynamic_ui},
-			{"DYNAMIC_GALLERY",	tune_dynamic_gallery},
-			{"DYNAMIC_VT",		tune_dynamic_vt},
+			{"DYNAMIC_UI",		(unsigned short *)&tune_dynamic_ui},
+			{"DYNAMIC_VIDEO",	(unsigned short *)&tune_dynamic_video},
+			{"DYNAMIC_VIDEO",	(unsigned short *)&tune_dynamic_video},
+			{"DYNAMIC_VIDEO",	(unsigned short *)&tune_dynamic_video},
+			{"CAMERA",		(unsigned short *)&tune_camera},
+			{"DYNAMIC_UI",		(unsigned short *)&tune_dynamic_ui},
+			{"DYNAMIC_GALLERY",	(unsigned short *)&tune_dynamic_gallery},
+			{"DYNAMIC_VT",		(unsigned short *)&tune_dynamic_vt},
 		}, {
-			{"STANDARD_UI",		tune_standard_ui},
-			{"STANDARD_VIDEO",	tune_standard_video},
-			{"STANDARD_VIDEO",	tune_standard_video},
-			{"STANDARD_VIDEO",	tune_standard_video},
-			{"CAMERA",		tune_camera},
-			{"STANDARD_UI",		tune_standard_ui},
-			{"STANDARD_GALLERY",	tune_standard_gallery},
-			{"STANDARD_VT",		tune_standard_vt},
+			{"STANDARD_UI",		(unsigned short *)&tune_standard_ui},
+			{"STANDARD_VIDEO",	(unsigned short *)&tune_standard_video},
+			{"STANDARD_VIDEO",	(unsigned short *)&tune_standard_video},
+			{"STANDARD_VIDEO",	(unsigned short *)&tune_standard_video},
+			{"CAMERA",		(unsigned short *)&tune_camera},
+			{"STANDARD_UI",		(unsigned short *)&tune_standard_ui},
+			{"STANDARD_GALLERY",	(unsigned short *)&tune_standard_gallery},
+			{"STANDARD_VT",		(unsigned short *)&tune_standard_vt},
 		}, {
-			{"NATURAL_UI",		tune_natural_ui},
-			{"NATURAL_VIDEO",	tune_natural_video},
-			{"NATURAL_VIDEO",	tune_natural_video},
-			{"NATURAL_VIDEO",	tune_natural_video},
-			{"CAMERA",		tune_camera},
-			{"NATURAL_UI",		tune_natural_ui},
-			{"NATURAL_GALLERY",	tune_natural_gallery},
-			{"NATURAL_VT",		tune_natural_vt},
+			{"NATURAL_UI",		(unsigned short *)&tune_natural_ui},
+			{"NATURAL_VIDEO",	(unsigned short *)&tune_natural_video},
+			{"NATURAL_VIDEO",	(unsigned short *)&tune_natural_video},
+			{"NATURAL_VIDEO",	(unsigned short *)&tune_natural_video},
+			{"CAMERA",		(unsigned short *)&tune_camera},
+			{"NATURAL_UI",		(unsigned short *)&tune_natural_ui},
+			{"NATURAL_GALLERY",	(unsigned short *)&tune_natural_gallery},
+			{"NATURAL_VT",		(unsigned short *)&tune_natural_vt},
 		}, {
-			{"MOVIE_UI",		tune_movie_ui},
-			{"MOVIE_VIDEO",		tune_movie_video},
-			{"MOVIE_VIDEO",		tune_movie_video},
-			{"MOVIE_VIDEO",		tune_movie_video},
-			{"CAMERA",		tune_camera},
-			{"MOVIE_UI",		tune_movie_ui},
-			{"MOVIE_GALLERY",	tune_movie_gallery},
-			{"MOVIE_VT",		tune_movie_vt},
+			{"MOVIE_UI",		(unsigned short *)&tune_movie_ui},
+			{"MOVIE_VIDEO",		(unsigned short *)&tune_movie_video},
+			{"MOVIE_VIDEO",		(unsigned short *)&tune_movie_video},
+			{"MOVIE_VIDEO",		(unsigned short *)&tune_movie_video},
+			{"CAMERA",		(unsigned short *)&tune_camera},
+			{"MOVIE_UI",		(unsigned short *)&tune_movie_ui},
+			{"MOVIE_GALLERY",	(unsigned short *)&tune_movie_gallery},
+			{"MOVIE_VT",		(unsigned short *)&tune_movie_vt},
 		},
 	}
 };
 
 static struct mdnie_tunning_info camera_table[OUTDOOR_MAX] = {
-	{"CAMERA",		tune_camera},
-	{"CAMERA_OUTDOOR",	tune_camera_outdoor},
+	{"CAMERA",		(unsigned short *)&tune_camera},
+	{"CAMERA_OUTDOOR",	(unsigned short *)&tune_camera_outdoor},
 };
 
 #endif /* __MDNIE_TABLE_H__ */
