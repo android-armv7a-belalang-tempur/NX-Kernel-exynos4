@@ -16,7 +16,11 @@ obj-$(CONFIG_FB_S5P_AMS369FG06)	+= s3cfb_ams369fg06.o
 obj-$(CONFIG_FB_S5P_LD9040)	+= ld9040.o smart_dimming_ld9042.o
 obj-$(CONFIG_FB_S5P_NT35560)	+= nt35560.o
 obj-$(CONFIG_FB_S5P_MDNIE)      += s3cfb_mdnie.o s3cfb_ielcd.o mdnie.o mdnie_tunning.o
+ifeq ($(CONFIG_CPU_EXYNOS4210),y)
+obj-$(CONFIG_FB_S5P_MDNIE_CONTROL)      += mdnie_control_4210.o
+else
 obj-$(CONFIG_FB_S5P_MDNIE_CONTROL)      += mdnie_control.o
+endif
 obj-$(CONFIG_FB_S5P_LMS501KF03)	+= s3cfb_lms501kf03.o
 obj-$(CONFIG_FB_S5P_LMS501XX)	+= s3cfb_lms501xx.o
 obj-$(CONFIG_FB_S5P_DUMMY_MIPI_LCD)	+= s3cfb_dummymipilcd.o
