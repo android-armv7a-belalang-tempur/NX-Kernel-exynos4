@@ -3,6 +3,59 @@
 
 #include "mdnie.h"
 
+static unsigned short tune_cyanogenmod[] = {
+	/*start */
+	0x0001, 0x0040, /*SCR HDTR */
+	0x002c, 0x0fff, /*DNR bypass 0x003C */
+	0x002d, 0x1900, /*DNR bypass 0x0a08 */
+	0x002e, 0x0000, /*DNR bypass 0x1010 */
+	0x002f, 0x0fff, /*DNR bypass 0x0400 */
+	0x003a, 0x000d, /*HDTR DE CS */
+	0x003b, 0x0030, /*DE SHARPNESS */
+	0x003c, 0x0000, /*NOISE LEVEL */
+	0x003f, 0x0030, /*CS GAIN */
+	0x0042, 0x0000, /*DE TH (MAX DIFF) */
+	0x00c8, 0x0000, /*kb R	SCR */
+	0x00c9, 0x0000, /*gc R */
+	0x00ca, 0xffff, /*rm R */
+	0x00cb, 0xffff, /*yw R */
+	0x00cc, 0x0000, /*kb G */
+	0x00cd, 0xffff, /*gc G */
+	0x00ce, 0x0000, /*rm G */
+	0x00cf, 0xffff, /*yw G */
+	0x00d0, 0x00ff, /*kb B */
+	0x00d1, 0x00ff, /*gc B */
+	0x00d2, 0x00ff, /*rm B */
+	0x00d3, 0x00ff, /*yw B */
+	0x00d6, 0x3f00, /*GAMMA bp2 */
+	0x00d7, 0x2003,
+	0x00d8, 0x2003,
+	0x00d9, 0x2003,
+	0x00da, 0x2003,
+	0x00db, 0x2003,
+	0x00dc, 0x2003,
+	0x00dd, 0x2003,
+	0x00de, 0x2003,
+	0x00df, 0x2003,
+	0x00e0, 0x2003,
+	0x00e1, 0x2003,
+	0x00e2, 0x2003,
+	0x00e3, 0x2003,
+	0x00e4, 0x2003,
+	0x00e5, 0x2003,
+	0x00e6, 0x2003,
+	0x00e7, 0x2003,
+	0x00e8, 0x2003,
+	0x00e9, 0x2003,
+	0x00ea, 0x2003,
+	0x00eb, 0x2003,
+	0x00ec, 0x2003,
+	0x00ed, 0xff00,
+	0x00d5, 0x0001,
+	0x0028, 0x0000, /*Register Mask */
+	/*end */
+	END_SEQ, 0x0000,
+};
 
 static unsigned short tune_dynamic_gallery[] = {
 	/*start Q1 dynamic gallery */
@@ -1022,21 +1075,11 @@ static unsigned short tune_warm_outdoor[] = {
 	END_SEQ, 0x0000,
 };
 
-static unsigned short tune_normal[] = {
-	/*start Q1 normal */
-	0x0001, 0x0044, /*SCR MCM HDTR */
-	0x005b, 0x0028, /*MCM 4000K */
-	0x0061, 0x8000, /*CB */
-	0x0063, 0x0080, /*CR */
-	0x0028, 0x0000, /*Register Mask */
-	/*end */
-	END_SEQ, 0x0000,
-};
 
 static struct mdnie_tunning_info etc_table[CABC_MAX][OUTDOOR_MAX][TONE_MAX] = {
 	{
 		{
-			{"NORMAL",		(unsigned short *)&tune_normal},
+			{"NORMAL",		NULL},
 			{"WARM",		(unsigned short *)&tune_warm},
 			{"COLD",		(unsigned short *)&tune_cold},
 		},
@@ -1051,38 +1094,42 @@ static struct mdnie_tunning_info etc_table[CABC_MAX][OUTDOOR_MAX][TONE_MAX] = {
 static struct mdnie_tunning_info tunning_table[CABC_MAX][MODE_MAX][SCENARIO_MAX] = {
 	{
 		{
+			{"CYANOGENMOD",		(unsigned short *)&tune_cyanogenmod},
 			{"DYNAMIC_UI",		(unsigned short *)&tune_dynamic_ui},
 			{"DYNAMIC_VIDEO",	(unsigned short *)&tune_dynamic_video},
 			{"DYNAMIC_VIDEO",	(unsigned short *)&tune_dynamic_video},
 			{"DYNAMIC_VIDEO",	(unsigned short *)&tune_dynamic_video},
-			{"CAMERA",		(unsigned short *)&tune_camera},
+			{"CAMERA",		NULL},
 			{"DYNAMIC_UI",		(unsigned short *)&tune_dynamic_ui},
 			{"DYNAMIC_GALLERY",	(unsigned short *)&tune_dynamic_gallery},
 			{"DYNAMIC_VT",		(unsigned short *)&tune_dynamic_vt},
 		}, {
+			{"CYANOGENMOD",		(unsigned short *)&tune_cyanogenmod},
 			{"STANDARD_UI",		(unsigned short *)&tune_standard_ui},
 			{"STANDARD_VIDEO",	(unsigned short *)&tune_standard_video},
 			{"STANDARD_VIDEO",	(unsigned short *)&tune_standard_video},
 			{"STANDARD_VIDEO",	(unsigned short *)&tune_standard_video},
-			{"CAMERA",		(unsigned short *)&tune_camera},
+			{"CAMERA",		NULL},
 			{"STANDARD_UI",		(unsigned short *)&tune_standard_ui},
 			{"STANDARD_GALLERY",	(unsigned short *)&tune_standard_gallery},
 			{"STANDARD_VT",		(unsigned short *)&tune_standard_vt},
 		}, {
+			{"CYANOGENMOD",		(unsigned short *)&tune_cyanogenmod},
 			{"NATURAL_UI",		(unsigned short *)&tune_natural_ui},
 			{"NATURAL_VIDEO",	(unsigned short *)&tune_natural_video},
 			{"NATURAL_VIDEO",	(unsigned short *)&tune_natural_video},
 			{"NATURAL_VIDEO",	(unsigned short *)&tune_natural_video},
-			{"CAMERA",		(unsigned short *)&tune_camera},
+			{"CAMERA",		NULL},
 			{"NATURAL_UI",		(unsigned short *)&tune_natural_ui},
 			{"NATURAL_GALLERY",	(unsigned short *)&tune_natural_gallery},
 			{"NATURAL_VT",		(unsigned short *)&tune_natural_vt},
 		}, {
+			{"CYANOGENMOD",		(unsigned short *)&tune_cyanogenmod},
 			{"MOVIE_UI",		(unsigned short *)&tune_movie_ui},
 			{"MOVIE_VIDEO",		(unsigned short *)&tune_movie_video},
 			{"MOVIE_VIDEO",		(unsigned short *)&tune_movie_video},
 			{"MOVIE_VIDEO",		(unsigned short *)&tune_movie_video},
-			{"CAMERA",		(unsigned short *)&tune_camera},
+			{"CAMERA",		NULL},
 			{"MOVIE_UI",		(unsigned short *)&tune_movie_ui},
 			{"MOVIE_GALLERY",	(unsigned short *)&tune_movie_gallery},
 			{"MOVIE_VT",		(unsigned short *)&tune_movie_vt},

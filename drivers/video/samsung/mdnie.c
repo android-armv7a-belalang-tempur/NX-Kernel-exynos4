@@ -490,11 +490,11 @@ static ssize_t scenario_store(struct device *dev,
 	dev_info(dev, "%s :: value=%d\n", __func__, value);
 
 	if (!SCENARIO_IS_VALID(value))
-		value = UI_MODE;
+		value = CYANOGENMOD_MODE;
 
 #if defined(CONFIG_FB_MDNIE_PWM)
 	if (value >= SCENARIO_MAX)
-		value = UI_MODE;
+		value = CYANOGENMOD_MODE;
 #endif
 
 	mutex_lock(&mdnie->lock);
@@ -839,7 +839,7 @@ static ssize_t store_##name(struct device *dev, \
 } \
 static DEVICE_ATTR(name, S_IRUGO | S_IWUGO, show_##name, store_##name);
 
-
+MDNIE_STORE(tune_cyanogenmod);
 MDNIE_STORE(tune_dynamic_gallery);
 MDNIE_STORE(tune_dynamic_ui);
 MDNIE_STORE(tune_dynamic_video);
@@ -875,6 +875,7 @@ MDNIE_STORE(tune_color_tone_3);
 #define MDNIE_ATTR(name) &dev_attr_##name.attr,
 
 static struct attribute *mdniesysfs_attributes[] = {
+MDNIE_ATTR(tune_cyanogenmod)
 MDNIE_ATTR(tune_dynamic_gallery)
 MDNIE_ATTR(tune_dynamic_ui)
 MDNIE_ATTR(tune_dynamic_video)
@@ -993,7 +994,7 @@ static int mdnie_probe(struct platform_device *pdev)
 		dev_err(&mdnie->bd->dev, "failed to add sysfs entries, %d\n", __LINE__);
 #endif
 
-	mdnie->scenario = UI_MODE;
+	mdnie->scenario = CYANOGENMOD_MODE;
 	mdnie->mode = STANDARD;
 	mdnie->tone = TONE_NORMAL;
 	mdnie->outdoor = OUTDOOR_OFF;
