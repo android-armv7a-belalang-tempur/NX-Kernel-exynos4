@@ -30,11 +30,7 @@
 #include <linux/power/sec_battery_u1.h>
 #include "charge_current.h"
 
-#if defined(CONFIG_TARGET_LOCALE_NA) || defined(CONFIG_TARGET_LOCALE_NAATT)
-#define POLLING_INTERVAL	(10 * 1000)
-#else
-#define POLLING_INTERVAL	(40 * 1000)
-#endif				/* CONFIG_TARGET_LOCALE_NA */
+#define POLLING_INTERVAL	(50 * 1000)
 
 #ifdef SEC_BATTERY_INDEPEDENT_VF_CHECK
 #if defined(CONFIG_TARGET_LOCALE_NAATT)
@@ -49,7 +45,7 @@
 #endif
 #define	VF_COUNT	1
 #elif defined(CONFIG_MACH_Q1_BD)
-#define VF_CHECK_INTERVAL	(5 * 1000)
+#define VF_CHECK_INTERVAL	(10 * 1000)
 #define	MAX_VF_ADC	2500
 #define	MIN_VF_ADC	1800
 #define	ADC_CH_VF	1
