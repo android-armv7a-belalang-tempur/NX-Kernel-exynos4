@@ -30,7 +30,7 @@
 
 #define CUSTOMVOLTAGE_VERSION 1
 #define CPU_UV_MV_MAX 1600000
-#define CPU_UV_MV_MIN 800000
+#define CPU_UV_MV_MIN 900000
 
 #ifdef MODULE
 static int (*gm_misc_register)(struct miscdevice * misc);
