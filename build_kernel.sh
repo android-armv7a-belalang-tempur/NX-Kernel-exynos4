@@ -155,6 +155,10 @@ if [ -e ${KERNELDIR}/arch/arm/boot/zImage ]; then
 			STATUS=`adb get-state` >> /dev/null
 		done
 		adb push ${KERNELDIR}/out/NX-Kernel_v*.zip /sdcard/
+		read -t 5 -p "Reboot to recovery? [5 sec timeout] (y/n)" reboot_recovery;
+		if [ "$reboot_recovery" == "y" ]; then
+			adb reboot recovery;
+		fi;    
 	else
 		echo "Finished!"
 		exit 0;
