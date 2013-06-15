@@ -197,9 +197,11 @@ static u8 sii9234_tmds_control(struct sii9234_data *sii9234, bool enable);
 #ifdef __CONFIG_TMDS_OFFON_WORKAROUND__
 static u8 sii9234_tmds_control2(struct sii9234_data *sii9234, bool enable);
 #endif
+#ifndef __MHL_NEW_CBUS_MSC_CMD__
 static bool cbus_command_request(struct sii9234_data *sii9234,
 				 enum cbus_command command, u8 offset, u8 data);
 static void cbus_command_response(struct sii9234_data *sii9234);
+#endif
 static irqreturn_t sii9234_irq_thread(int irq, void *data);
 
 static void goto_d3(void);
@@ -307,7 +309,9 @@ bool sii9234_is_mhl_power_state_on(void)
 u8 mhl_onoff_ex(bool onoff)
 {
 	struct sii9234_data *sii9234 = dev_get_drvdata(sii9244_mhldev);
+#ifdef CONFIG_SAMSUNG_USE_11PIN_CONNECTOR
 	int ret;
+#endif
 
 	pr_info("sii9234: %s(%s)\n", __func__, onoff ? "on" : "off");
 
@@ -1101,10 +1105,12 @@ void mhl_path_enable(struct sii9234_data *sii9234, bool path_en)
 #endif
 }
 
+#if 0
 static void cbus_handle_wrt_burst_recd(struct sii9234_data *sii9234)
 {
 	pr_debug("sii9234: CBUS WRT_BURST_RECD\n");
 }
+#endif
 
 static void cbus_handle_wrt_stat_recd(struct sii9234_data *sii9234)
 {
@@ -2705,6 +2711,7 @@ static void save_cbus_pkt_to_buffer(struct sii9234_data *sii9234)
 	sii9234->cbus_pkt_buf[index].status = true;
 }
 
+#ifndef __MHL_NEW_CBUS_MSC_CMD__
 static void cbus_command_response(struct sii9234_data *sii9234)
 {
 	u8 value, offset = 0;
@@ -2858,6 +2865,7 @@ static void cbus_command_response(struct sii9234_data *sii9234)
 	if (offset)
 		cbus_command_request(sii9234, CBUS_READ_DEVCAP, offset, 0x00);
 }
+#endif
 
 #ifdef DEBUG_MHL
 static void cbus_command_response_dbg_msg(struct sii9234_data *sii9234,
@@ -2883,6 +2891,7 @@ static void cbus_command_response_dbg_msg(struct sii9234_data *sii9234,
 }
 #endif
 
+#ifndef __MHL_NEW_CBUS_MSC_CMD__
 static void cbus_command_response_all(struct sii9234_data *sii9234)
 {
 	u8 index;
@@ -2908,7 +2917,9 @@ static void cbus_command_response_all(struct sii9234_data *sii9234)
 		}
 	}
 }
+#endif
 
+#ifndef __MHL_NEW_CBUS_MSC_CMD__
 static bool cbus_command_request(struct sii9234_data *sii9234,
 				 enum cbus_command command, u8 offset, u8 data)
 {
@@ -2995,6 +3006,7 @@ static bool cbus_command_request(struct sii9234_data *sii9234,
 
 	return true;
 }
+#endif
 
 #ifdef __CONFIG_TMDS_OFFON_WORKAROUND__
 static u8 sii9234_tmds_control(struct sii9234_data *sii9234, bool enable)
@@ -4058,8 +4070,8 @@ err_extcon:
 #endif
 #ifdef __CONFIG_MHL_SWING_LEVEL__
 	class_remove_file(sec_mhl, &class_attr_swing);
-#endif
  err_exit2b:
+#endif
 #ifdef __CONFIG_SS_FACTORY__
 	class_remove_file(sec_mhl, &class_attr_test_result);
 #endif

@@ -211,6 +211,7 @@ _mali_osk_errcode_t _ump_osk_mem_mapregion_map( ump_memory_allocation * descript
 	return retval;
 }
 
+#if 0
 static u32 _ump_osk_virt_to_phys_start(ump_dd_mem * mem, u32 start, u32 address, int *index)
 {
 	int i;
@@ -231,6 +232,7 @@ static u32 _ump_osk_virt_to_phys_start(ump_dd_mem * mem, u32 start, u32 address,
 	return _MALI_OSK_ERR_FAULT;
 }
 
+
 static u32 _ump_osk_virt_to_phys_end(ump_dd_mem * mem, u32 start, u32 address, int *index)
 {
 	int i;
@@ -250,6 +252,7 @@ static u32 _ump_osk_virt_to_phys_end(ump_dd_mem * mem, u32 start, u32 address, i
 
 	return _MALI_OSK_ERR_FAULT;
 }
+
 
 static void _ump_osk_msync_with_virt(ump_dd_mem * mem, ump_uk_msync_op op, u32 start, u32 address, u32 size)
 {
@@ -299,6 +302,7 @@ static void _ump_osk_msync_with_virt(ump_dd_mem * mem, ump_uk_msync_op op, u32 s
 	}
 	return;
 }
+#endif
 
 static void level1_cache_flush_all(void)
 {

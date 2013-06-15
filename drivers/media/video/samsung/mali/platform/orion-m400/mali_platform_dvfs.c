@@ -281,7 +281,9 @@ mali_bool set_mali_dvfs_current_step(unsigned int step)
 static mali_bool set_mali_dvfs_status(u32 step,mali_bool boostup)
 {
 	u32 validatedStep=step;
+#if CPUFREQ_LOCK_DURING_440
 	int err;
+#endif
 
 #ifdef CONFIG_REGULATOR
 	if (mali_regulator_get_usecount() == 0) {
@@ -667,7 +669,9 @@ mali_bool mali_dvfs_handler(u32 utilization)
 
 int change_dvfs_tableset(int change_clk, int change_step)
 {
+#if CPUFREQ_LOCK_DURING_440
 	int err;
+#endif
 
 	mali_dvfs[change_step].clock = change_clk;
 	MALI_PRINT((":::mali dvfs step %d clock and voltage = %d Mhz, %d V\n",change_step, mali_dvfs[change_step].clock, mali_dvfs[change_step].vol));
