@@ -1308,12 +1308,15 @@ static void dbs_check_cpu(struct cpu_dbs_info_s *this_dbs_info)
 	unsigned int total_load = 0;
 	unsigned int avg_load = 0;
 	int load_each[4] = {-1, -1, -1, -1};
+#ifdef CONFIG_CPU_FREQ_GOV_ONDEMAND_FLEXRATE
+	int hp_s_delay, hp_s_delayc;
+#endif
 
 	policy = this_dbs_info->cur_policy;
 
 #ifdef CONFIG_CPU_FREQ_GOV_ONDEMAND_FLEXRATE
-	int hp_s_delay = this_dbs_info->flex_hotplug_sample_delay;
-	int hp_s_delayc = this_dbs_info->flex_hotplug_sample_delay_count;
+	hp_s_delay = this_dbs_info->flex_hotplug_sample_delay;
+	hp_s_delayc = this_dbs_info->flex_hotplug_sample_delay_count;
 
 	if(hp_s_delay > 0 && hp_s_delay != hp_s_delayc) {
 		hotplug_history->usage[num_hist].freq = 
@@ -1619,7 +1622,6 @@ int cpufreq_ondemand_flexrate_request(unsigned int rate_us, unsigned int duratio
 	unsigned int cpu = policy->cpu;
 	struct cpu_dbs_info_s *dbs_info = &per_cpu(od_cpu_dbs_info, 0);
 	unsigned int sample_overflow = 0;
-	bool now = 0;
 
 #ifdef CONFIG_CPU_FREQ_LCD_FREQ_DFS
 	/* hijack flexrate request as a touch lcdfreq boost */
@@ -1718,6 +1720,7 @@ static inline void dbs_timer_exit(struct cpu_dbs_info_s *dbs_info)
 	cancel_work_sync(&dbs_info->down_work);
 }
 
+#if !EARLYSUSPEND_HOTPLUGLOCK
 static int pm_notifier_call(struct notifier_block *this,
 			    unsigned long event, void *ptr)
 {
@@ -1744,6 +1747,7 @@ static int pm_notifier_call(struct notifier_block *this,
 static struct notifier_block pm_notifier = {
 	.notifier_call = pm_notifier_call,
 };
+#endif
 
 static int reboot_notifier_call(struct notifier_block *this,
 				unsigned long code, void *_cmd)
