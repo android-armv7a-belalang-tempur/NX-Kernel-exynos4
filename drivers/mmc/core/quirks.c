@@ -232,7 +232,6 @@ static int mmc_movi_read_cmd(struct mmc_card *card, u8 *buffer, u32 arg,
 int mmc_movi_read_ram_page(struct mmc_card *card, u8 *buffer, u32 address)
 {
 	int err = 0, errx = 0;
-	u32 val;
 
 	mmc_claim_host(card->host);
 
