@@ -1309,7 +1309,7 @@ static void nightmare_check_cpu(struct cpufreq_nightmare_cpuinfo *this_nightmare
 		min_freq = cpu_policy->min;
 		max_freq = cpu_policy->max;
 		if (earlysuspend) {
-			min_freq = min(200000,cpu_policy->min);
+			min_freq = 200000;
 			max_freq = 800000;
 		}
 		/* CPUs Online Scale Frequency*/
