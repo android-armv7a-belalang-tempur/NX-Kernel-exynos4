@@ -361,7 +361,6 @@ static inline void s3c_udc_check_tx_queue(struct s3c_udc *dev, u8 ep_num)
 static void process_ep_in_intr(struct s3c_udc *dev)
 {
 	u32 ep_intr, ep_intr_status;
-	u32 ep_ctrl;
 	u8 ep_num = 0;
 	u32 result;
 
