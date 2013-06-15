@@ -3473,7 +3473,7 @@ CIFSSMBSetCIFSACL(const int xid, struct cifs_tcon *tcon, __u16 fid,
 	int rc = 0;
 	int bytes_returned = 0;
 	SET_SEC_DESC_REQ *pSMB = NULL;
-	NTRANSACT_RSP *pSMBr = NULL;
+	void *pSMBr;
 
 setCifsAclRetry:
 	rc = smb_init(SMB_COM_NT_TRANSACT, 19, tcon, (void **) &pSMB,
@@ -3507,9 +3507,8 @@ setCifsAclRetry:
 	pSMB->AclFlags = cpu_to_le32(CIFS_ACL_DACL);
 
 	if (pntsd && acllen) {
-		memcpy((char *) &pSMBr->hdr.Protocol + data_offset,
-			(char *) pntsd,
-			acllen);
+		memcpy((char *)pSMBr + offsetof(struct smb_hdr, Protocol) +
+			data_offset, pntsd, acllen);
 		inc_rfc1001_len(pSMB, byte_count + data_count);
 	} else
 		inc_rfc1001_len(pSMB, byte_count);
