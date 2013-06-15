@@ -809,7 +809,8 @@ static int s5p_dsim_late_resume_init_dsim(struct dsim_global *dsim)
 	return 0;
 }
 
-
+#ifndef CONFIG_HAS_EARLYSUSPEND
+#ifdef CONFIG_PM
 static int s5p_dsim_init_dsim(struct dsim_global *dsim)
 {
 	unsigned int dsim_base = dsim->reg_base;
@@ -848,6 +849,8 @@ static int s5p_dsim_init_dsim(struct dsim_global *dsim)
 
 	return 0;
 }
+#endif
+#endif
 
 void s5p_dsim_set_lcd_freq_change(struct s3cfb_lcd_timing *timing)
 {
