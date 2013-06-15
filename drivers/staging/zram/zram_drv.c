@@ -352,7 +352,6 @@ static void zram_write(struct zram *zram, struct bio *bio)
 	index = bio->bi_sector >> SECTORS_PER_PAGE_SHIFT;
 
 	bio_for_each_segment(bvec, bio, i) {
-		int ret;
 		u32 offset;
 		size_t clen;
 		struct zobj_header *zheader;
