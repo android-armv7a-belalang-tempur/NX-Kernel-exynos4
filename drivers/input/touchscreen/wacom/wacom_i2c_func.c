@@ -814,8 +814,10 @@ int wacom_i2c_coord(struct wacom_i2c *wac_i2c)
 	static s16 x, y, pressure;
 	static s16 tmp;
 	int rdy = 0;
+#ifdef WACOM_USE_HEIGHT
 	u8 gain = 0;
 	u8 height = 0;
+#endif
 	int aveStrength = 2;
 
 #ifdef WACOM_IRQ_WORK_AROUND
