@@ -207,7 +207,7 @@ static int smb136_get_property(struct power_supply *psy,
 	struct smb136_chip *chip = container_of(psy,
 						  struct smb136_chip,
 						  charger);
-	u8 data;
+	u8 data = 0;
 
 	switch (psp) {
 	case POWER_SUPPLY_PROP_STATUS:
