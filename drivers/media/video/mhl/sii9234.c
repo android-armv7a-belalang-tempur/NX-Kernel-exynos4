@@ -2692,6 +2692,7 @@ static int sii9234_30pin_init_for_9290(struct sii9234_data *sii9234)
 }
 #endif				/* CONFIG_SAMSUNG_MHL_9290 */
 
+#ifndef __MHL_NEW_CBUS_MSC_CMD__
 static void save_cbus_pkt_to_buffer(struct sii9234_data *sii9234)
 {
 	int index;
@@ -2711,7 +2712,6 @@ static void save_cbus_pkt_to_buffer(struct sii9234_data *sii9234)
 	sii9234->cbus_pkt_buf[index].status = true;
 }
 
-#ifndef __MHL_NEW_CBUS_MSC_CMD__
 static void cbus_command_response(struct sii9234_data *sii9234)
 {
 	u8 value, offset = 0;
