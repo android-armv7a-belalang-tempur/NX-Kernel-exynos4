@@ -188,6 +188,10 @@ int16_t sumsize;
 int touch_is_pressed;
 EXPORT_SYMBOL(touch_is_pressed);
 
+#ifdef CONFIG_CPU_FREQ_LCD_FREQ_DFS
+extern void _lcdfreq_lock(int lock);
+#endif
+
 struct device *sec_touchscreen;
 static u8 firmware_latest = 0x13;
 static u8 build_latest = 0xAA;
@@ -1319,6 +1323,12 @@ static irqreturn_t mxt540e_irq_thread(int irq, void *ptr)
 
 	if (data->finger_mask)
 		report_input_data(data);
+
+#ifdef CONFIG_CPU_FREQ_LCD_FREQ_DFS
+	if(!!touch_is_pressed){
+		_lcdfreq_lock(0);
+	}
+#endif
 
 	return IRQ_HANDLED;
 }
