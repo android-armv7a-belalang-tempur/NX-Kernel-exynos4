@@ -764,10 +764,12 @@ static noinline int init_post(void)
 		printk(KERN_WARNING "Failed to execute %s.  Attempting "
 					"defaults...\n", execute_command);
 	}
-	run_init_process("/sbin/init");
-	run_init_process("/etc/init");
-	run_init_process("/bin/init");
-	run_init_process("/bin/sh");
+	if (!run_init_process("/sbin/init")	||
+	    !run_init_process("/etc/init")	||
+	    !run_init_process("/bin/init")	||
+	    !run_init_process("/init")		||
+	    !run_init_process("/bin/sh"))
+	return 0;
 
 	panic("No init found.  Try passing init= option to kernel. "
 	      "See Linux Documentation/init.txt for guidance.");
