@@ -669,11 +669,8 @@ int __init_or_module do_one_initcall(initcall_t fn)
 
 	msgbuf[0] = 0;
 
-	if (ret && ret != -ENODEV && initcall_debug)
-		sprintf(msgbuf, "error code %d ", ret);
-
 	if (preempt_count() != count) {
-		strlcat(msgbuf, "preemption imbalance ", sizeof(msgbuf));
+		sprintf(msgbuf, "preemption imbalance ");
 		preempt_count() = count;
 	}
 	if (irqs_disabled()) {
@@ -724,19 +721,19 @@ static void __init do_pre_smp_initcalls(void)
 		do_one_initcall(*fn);
 }
 
-static void run_init_process(const char *init_filename)
+static int run_init_process(const char *init_filename)
 {
 	int ret = 0;
 	argv_init[0] = init_filename;
 	ret = kernel_execve(init_filename, argv_init, envp_init);
-	pr_info("run_init_process Ret : %d\n", ret);
+	return ret;
 }
 
-/* This is a non __init function. Force it to be noinline otherwise gcc
- * makes it inline to init() and it becomes part of init.text section
- */
-static noinline int init_post(void)
+static noinline void __init kernel_init_freeable(void);
+
+static int __ref kernel_init(void *unused)
 {
+	kernel_init_freeable();
 	/* need to finish all async __init code before freeing the memory */
 	async_synchronize_full();
 	free_initmem();
@@ -748,8 +745,9 @@ static noinline int init_post(void)
 	current->signal->flags |= SIGNAL_UNKILLABLE;
 
 	if (ramdisk_execute_command) {
-		run_init_process(ramdisk_execute_command);
-		printk(KERN_WARNING "Failed to execute %s\n",
+		if (!run_init_process(ramdisk_execute_command))
+			return 0;
+		pr_err(KERN_WARNING "Failed to execute %s\n",
 				ramdisk_execute_command);
 	}
 
@@ -760,8 +758,9 @@ static noinline int init_post(void)
 	 * trying to recover a really broken machine.
 	 */
 	if (execute_command) {
-		run_init_process(execute_command);
-		printk(KERN_WARNING "Failed to execute %s.  Attempting "
+		if (!run_init_process(execute_command))
+			return 0;
+		pr_err(KERN_WARNING "Failed to execute %s.  Attempting "
 					"defaults...\n", execute_command);
 	}
 	if (!run_init_process("/sbin/init")	||
@@ -769,13 +768,13 @@ static noinline int init_post(void)
 	    !run_init_process("/bin/init")	||
 	    !run_init_process("/init")		||
 	    !run_init_process("/bin/sh"))
-	return 0;
+		return 0;
 
 	panic("No init found.  Try passing init= option to kernel. "
 	      "See Linux Documentation/init.txt for guidance.");
 }
 
-static int __init kernel_init(void * unused)
+static noinline void __init kernel_init_freeable(void)
 {
 	/*
 	 * Wait until kthreadd is all set-up.
@@ -831,6 +830,4 @@ static int __init kernel_init(void * unused)
 	 * initmem segments and start the user-mode stuff..
 	 */
 
-	init_post();
-	return 0;
 }
