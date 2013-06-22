@@ -1,38 +1,33 @@
-make ARCH=arm CROSS_COMPILE=android-toolchain/bin/arm-eabi- mrproper;
+#!/bin/bash
+
+echo "***** Setting up Environment *****";
+
+. ./env_setup.sh ${1} || exit 1;
+
+echo "${bldcya}***** Cleaning in Progress *****${txtrst}";
+
+make mrproper;
 make clean;
-rm -f zImage;
-rm -f out/zImage;
-rm -f out/boot.img;
-rm -f boot.img;
-rm -f out/system/lib/modules/*;
-rm -f out/NX-Kernel_*;
+rm -rf $INITRAMFS_TMP;
+rm -f $KERNELDIR/r*.cpio
+rm -f $KERNELDIR/zImage;
+rm -f $KERNELDIR/out/zImage;
+rm -f $KERNELDIR/out/boot.img;
+rm -f $KERNELDIR/boot.img;
+rm -rf $KERNELDIR/out/system/lib/modules;
+rm -rf $KERNELDIR/out/tmp_modules;
+rm -f $KERNELDIR/out/NX-Kernel_*;
 
-JUNK=`find . -name *.rej`;
-for i in $JUNK; do
-	ls $i;
-	rm -f $i
-done;
+find . -type f \( -iname \*.rej \
+				-o -iname \*.orig \
+				-o -iname \*.bkp \
+				-o -iname \*.ko \
+				-o -iname \*.c.BACKUP.[0-9]*.c \
+				-o -iname \*.c.BASE.[0-9]*.c \
+				-o -iname \*.c.LOCAL.[0-9]*.c \
+				-o -iname \*.c.REMOTE.[0-9]*.c \
+				-o -iname \*.org \) \
+					| parallel rm -fv {};
 
-JUNK=`find . -name *.orig`;
-for i in $JUNK; do
-	ls $i;
-	rm -f $i;
-done;
+echo "${bldcya}***** Cleaning Done *****${txtrst}";
 
-JUNK=`find . -name *.bkp`;
-for i in $JUNK; do
-	ls $i;
-	rm -f $i;
-done;
-
-JUNK=`find . -name *.ko`;
-for i in $JUNK; do
-	ls $i;
-	rm -f $i;
-done;
-
-JUNK=`find . -name *.org`;
-for i in $JUNK; do
-        ls $i;
-        rm -f $i;
-done;

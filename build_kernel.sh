@@ -15,154 +15,179 @@
 # Have fun and update me if something nice can be added to my source.         #
 ###############################################################################
 
-# location
-export KERNELDIR=`readlink -f .`
-export PARENT_DIR=`readlink -f ..`
+# Time of build startup
+res1=$(date +%s.%N)
 
-# kernel
-export ARCH=arm
-export USE_SEC_FIPS_MODE=true
-export KERNEL_CONFIG="nx_defconfig"
+echo "${bldcya}***** Setting up Environment *****${txtrst}";
 
-# build script
-export USER=`whoami`
-export OLDMODULES=`find -name *.ko`
+. ./env_setup.sh ${1} || exit 1;
 
-# system compiler
-# gcc 4.7.2 (Linaro 12.07)
-export CROSS_COMPILE=${KERNELDIR}/android-toolchain/bin/arm-eabi-
-
-NAMBEROFCPUS=`grep 'processor' /proc/cpuinfo | wc -l`
-
-if [ "${1}" != "" ]; then
-	export KERNELDIR=`readlink -f ${1}`
+# check xml-config for "NXTweaks"-app
+XML2CHECK="$INITRAMFS_SOURCE/res/customconfig/customconfig.xml";
+xmllint --noout $XML2CHECK;
+if [ $? == 1 ]; then
+	echo "xml-Error: $XML2CHECK";
+	exit 1;
 fi;
 
-if [ ! -f ${KERNELDIR}/.config ]; then
-	echo "***** Writing Config *****"
-	cp ${KERNELDIR}/arch/arm/configs/${KERNEL_CONFIG} .config
-	make ${KERNEL_CONFIG}
+# Generate Ramdisk
+echo "${bldcya}***** Generating Ramdisk *****${txtrst}"
+echo "0" > $TMPFILE;
+(
+# remove previous initramfs files
+if [ -d $INITRAMFS_TMP ]; then
+	echo "${bldcya}***** Removing old temp initramfs_source *****${txtrst}";
+	rm -rf $INITRAMFS_TMP;
 fi;
 
-. ${KERNELDIR}/.config
+	mkdir -p $INITRAMFS_TMP;
+	cp -ax $INITRAMFS_SOURCE/* $INITRAMFS_TMP;
+	# clear git repository from tmp-initramfs
+	if [ -d $INITRAMFS_TMP/.git ]; then
+		rm -rf $INITRAMFS_TMP/.git;
+	fi;
+	
+	# clear mercurial repository from tmp-initramfs
+	if [ -d $INITRAMFS_TMP/.hg ]; then
+		rm -rf $INITRAMFS_TMP/.hg;
+	fi;
+
+	# remove empty directory placeholders from tmp-initramfs
+	find $INITRAMFS_TMP -name EMPTY_DIRECTORY | parallel rm -rf {};
+
+	# remove more from from tmp-initramfs ...
+	rm -f $INITRAMFS_TMP/update*;
+
+	# remove old ramdisk cpio
+	if [ -e $KERNELDIR/ramdisk.cpio ]; then
+		rm -f $KERNELDIR/ramdisk.cpio;
+	fi;
+	if [ -e $KERNELDIR/ramdisk-recovery.cpio ]; then
+		rm -f $KERNELDIR/ramdisk-recovery.cpio;
+	fi;
+
+	./mkbootfs $INITRAMFS_TMP/nx-recovery > $KERNELDIR/ramdisk-recovery.cpio;
+	rm -rf $INITRAMFS_TMP/nx-recovery >> /dev/null;
+	./mkbootfs $INITRAMFS_TMP > $KERNELDIR/ramdisk.cpio;
+
+	if [ ! -s $KERNELDIR/ramdisk.cpio ] || [ ! -s $KERNELDIR/ramdisk-recovery.cpio ]; then
+		echo "${bldblu}Ramdisk didn't generated properly. Terminating.${txtrst}";
+		exit 1;
+	fi
+	echo "1" > $TMPFILE;
+	echo "${bldcya}***** Ramdisk Generation Completed Successfully *****${txtrst}"
+)&
+
+if [ ! -f $KERNELDIR/.config ]; then
+	echo "${bldcya}***** Writing Config *****${txtrst}";
+	cp $KERNELDIR/arch/arm/configs/$KERNEL_CONFIG .config;
+	make $KERNEL_CONFIG;
+fi;
+
+. $KERNELDIR/.config
 
 # remove previous zImage files
-if [ -e ${KERNELDIR}/zImage ]; then
-	rm ${KERNELDIR}/zImage
-	rm ${KERNELDIR}/boot.img
+if [ -e $KERNELDIR/zImage ]; then
+	rm $KERNELDIR/zImage;
+	rm $KERNELDIR/boot.img;
 fi;
-if [ -e ${KERNELDIR}/arch/arm/boot/zImage ]; then
-	rm ${KERNELDIR}/arch/arm/boot/zImage
+if [ -e $KERNELDIR/arch/arm/boot/zImage ]; then
+	rm $KERNELDIR/arch/arm/boot/zImage;
 fi;
 
-# remove all old modules before compile
-cd ${KERNELDIR}
-for i in $OLDMODULES; do
-	rm -f $i
-done;
-
-echo "***** Removing Old Compile Temp Files *****"
-echo "***** Please run 'sh clean_kernel.sh' for Complete Clean *****"
 # remove previous initramfs files
-rm -rf /tmp/cpio* >> /dev/null
-rm -rf out/system/lib/modules/* >> /dev/null
-rm -rf out/temp/* >> /dev/null
-rm -r out/temp >> /dev/null
-
+rm -rf $KERNELDIR/out/system/lib/modules >> /dev/null;
+rm -rf $KERNELDIR/out/tmp_modules >> /dev/null;
+rm -rf $KERNELDIR/out/temp >> /dev/null;
 
 # clean initramfs old compile data
-rm -f usr/initramfs_data.cpio >> /dev/null
-rm -f usr/initramfs_data.o >> /dev/null
+rm -f $KERNELDIR/usr/initramfs_data.cpio >> /dev/null;
+rm -f $KERNELDIR/usr/initramfs_data.o >> /dev/null;
 
-cd ${KERNELDIR}/
+# remove all old modules before compile
+find $KERNELDIR -name "*.ko" | parallel rm -rf {};
 
-mkdir -p out/system/lib/modules
-mkdir -p out/temp
+mkdir -p $KERNELDIR/out/system/lib/modules
+mkdir -p $KERNELDIR/out/tmp_modules
 
 # make modules and install
-echo "***** Compiling modules *****"
+echo "${bldcya}***** Compiling modules *****${txtrst}"
 if [ $USER != "root" ]; then
-	make -j${NAMBEROFCPUS} modules || exit 1
-	make -j${NAMBEROFCPUS} INSTALL_MOD_PATH=out/temp modules_install || exit 1
+	make -j$NUMBEROFCPUS modules || exit 1
 else
-	nice -n -15 make -j${NAMBEROFCPUS} modules || exit 1
-	nice -n -15 make -j${NAMBEROFCPUS} INSTALL_MOD_PATH=out/temp modules_install || exit 1
+	nice -n -15 make -j$NUMBEROFCPUS modules || exit 1
+fi;
+
+echo "${bldcya}***** Installing modules *****${txtrst}"
+if [ $USER != "root" ]; then
+	make -j$NUMBEROFCPUS INSTALL_MOD_PATH=$KERNELDIR/out/tmp_modules modules_install || exit 1
+else
+	nice -n -15 make -j$NUMBEROFCPUS INSTALL_MOD_PATH=$KERNELDIR/out/tmp_modules modules_install || exit 1
 fi;
 
 # copy modules
-echo "***** Copying modules *****"
-cd out
-find -name '*.ko' -exec cp -av {} "${KERNELDIR}/out/system/lib/modules" \;
-${CROSS_COMPILE}strip --strip-debug "${KERNELDIR}"/out/system/lib/modules/*.ko
-chmod 755 "${KERNELDIR}"/out/system/lib/modules/*
-cd ..
+echo "${bldcya}***** Copying modules *****${txtrst}"
+find $KERNELDIR/out/tmp_modules -name '*.ko' | parallel cp -av {} $KERNELDIR/out/system/lib/modules;
+find $KERNELDIR/out/system/lib/modules -name '*.ko' | parallel ${CROSS_COMPILE}strip --strip-debug {};
+chmod 755 $KERNELDIR/out/system/lib/modules/*;
 
 # remove temp module files generated during compile
-echo "***** Removing temp module stage 2 files *****"
-rm -rf out/temp/* >> /dev/null
-rm -r out/temp  >> /dev/null
+echo "${bldcya}***** Removing temp module stage 2 files *****${txtrst}"
+rm -rf $KERNELDIR/out/tmp_modules >> /dev/null
 
-# check if ramdisk available
-if [ ! -e ${KERNELDIR}/ramdisk.cpio ]; then
-	cd ../NX-initramfs
-	./mkbootfs root > ramdisk.cpio
-	cd ${KERNELDIR}
-	cp ../NX-initramfs/ramdisk.cpio ${KERNELDIR}
-	echo "***** Ramdisk Generated *****"
-fi;
-
-# check if recovery available
-if [ ! -e ${KERNELDIR}/ramdisk-recovery.cpio ]; then
-	cd ../NX-initramfs
-	./mkbootfs recovery/root > ramdisk-recovery.cpio
-	cd ${KERNELDIR}
-	cp ../NX-initramfs/ramdisk-recovery.cpio ${KERNELDIR}
-	echo "***** Recovery Generated *****"
-fi;
+# wait for the successful ramdisk generation
+while [ $(cat ${TMPFILE}) == 0 ]; do
+	sleep 2;
+	echo "${bldblu}Waiting for Ramdisk generation completion.${txtrst}";
+done;
 
 # make zImage
-echo "***** Compiling kernel *****"
+echo "${bldcya}***** Compiling kernel *****${txtrst}"
 if [ $USER != "root" ]; then
-	time make -j${NAMBEROFCPUS} zImage
+	make -j$NUMBEROFCPUS zImage
 else
-	time nice -n -15 make -j${NAMBEROFCPUS} zImage
+	nice -n -15 make -j$NUMBEROFCPUS zImage
 fi;
 
-echo "***** Final Touch for Kernel *****"
-if [ -e ${KERNELDIR}/arch/arm/boot/zImage ]; then
-	cp ${KERNELDIR}/arch/arm/boot/zImage ${KERNELDIR}/zImage
-	stat ${KERNELDIR}/zImage
+if [ -e $KERNELDIR/arch/arm/boot/zImage ]; then
+	echo "${bldcya}***** Final Touch for Kernel *****${txtrst}"
+	cp $KERNELDIR/arch/arm/boot/zImage $KERNELDIR/zImage;
+	stat $KERNELDIR/zImage || exit 1;
 	./acp -fp zImage boot.img
 	# copy all needed to out kernel folder
-	rm ${KERNELDIR}/out/boot.img >> /dev/null
-	rm ${KERNELDIR}/out/NX-Kernel_* >> /dev/null
-	stat ${KERNELDIR}/boot.img
+	rm $KERNELDIR/out/boot.img >> /dev/null;
+	rm $KERNELDIR/out/NX-Kernel_* >> /dev/null;
 	GETVER=`grep 'NX-Kernel_v.*' arch/arm/configs/${KERNEL_CONFIG} | sed 's/.*_.//g' | sed 's/".*//g'`
-	cp ${KERNELDIR}/boot.img /${KERNELDIR}/out/
-	cd ${KERNELDIR}/out/
+	cp $KERNELDIR/boot.img /$KERNELDIR/out/
+	cd $KERNELDIR/out/
 	zip -r NX-Kernel_v${GETVER}-`date +"[%m-%d]-[%H-%M]"`.zip .
-	echo "***** Ready to Roar *****"
-	while [ "$push_ok" != "y" ] && [ "$push_ok" != "n" ]
+	echo "${bldcya}***** Ready to Roar *****${txtrst}";
+	# finished? get elapsed time
+	res2=$(date +%s.%N)
+	echo "${bldgrn}Total time elapsed: ${txtrst}${grn}$(echo "($res2 - $res1) / 60"|bc ) minutes ($(echo "$res2 - $res1"|bc ) seconds) ${txtrst}";	
+	while [ "$push_ok" != "y" ] && [ "$push_ok" != "n" ] && [ "$push_ok" != "Y" ] && [ "$push_ok" != "N" ]
 	do
-	      read -p "Do you want to push the kernel to the sdcard of your device? (y/n)" push_ok
+	      read -p "${bldblu}Do you want to push the kernel to the sdcard of your device?${txtrst}${blu} (y/n)${txtrst}" push_ok;
+		sleep 1;
 	done
-	if [ "$push_ok" == "y" ]
-		then
+	if [ "$push_ok" == "y" ] || [ "$push_ok" == "Y" ]; then
 		STATUS=`adb get-state` >> /dev/null;
-		while [ "$STATUS" != "device" ]
+		while [ "$ADB_STATUS" != "device" ]
 		do
-			sleep 1
-			STATUS=`adb get-state` >> /dev/null
+			sleep 1;
+			ADB_STATUS=`adb get-state` >> /dev/null;
 		done
-		adb push ${KERNELDIR}/out/NX-Kernel_v*.zip /sdcard/
-		read -t 5 -p "Reboot to recovery? [5 sec timeout] (y/n)" reboot_recovery;
-		if [ "$reboot_recovery" == "y" ]; then
+		adb push $KERNELDIR/out/NX-Kernel_v*.zip /sdcard/
+		while [ "$reboot_recovery" != "y" ] && [ "$reboot_recovery" != "n" ] && [ "$reboot_recovery" != "Y" ] && [ "$reboot_recovery" != "N" ]
+		do
+			read -p "${bldblu}Reboot to recovery?${txtrst}${blu} (y/n)${txtrst}" reboot_recovery;
+			sleep 1;
+		done
+		if [ "$reboot_recovery" == "y" ] || [ "$reboot_recovery" == "Y" ]; then
 			adb reboot recovery;
-		fi;    
-	else
-		echo "Finished!"
-		exit 0;
+		fi;
 	fi;
+	exit 0;
 else
-	echo "Kernel STUCK in BUILD!"
+	echo "${bldred}Kernel STUCK in BUILD!${txtrst}"
 fi;
