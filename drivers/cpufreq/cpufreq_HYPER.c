@@ -46,10 +46,10 @@
 #define MAX_FREQUENCY_UP_THRESHOLD		(100)
 #define MIN_FREQUENCY_DOWN_DIFFERENTIAL		(1)
 #define FREQ_STEP				(30)
-#define DEFAULT_FREQ_BOOST_TIME			(100000)
-#define MAX_FREQ_BOOST_TIME			(3000000)
+#define DEFAULT_FREQ_BOOST_TIME			(300000)
+#define MAX_FREQ_BOOST_TIME			(1000000)
 #define UP_THRESHOLD_AT_MIN_FREQ		(40)
-#define FREQ_FOR_RESPONSIVENESS			(400000)
+#define FREQ_FOR_RESPONSIVENESS			(200000)
 
 static u64 hyper_freq_boosted_time;
 
@@ -67,7 +67,7 @@ static u64 hyper_freq_boosted_time;
 
 static unsigned int min_sampling_rate;
 #define DEFAULT_SAMPLING_RATE			(60000)
-#define BOOSTED_SAMPLING_RATE			(20000)
+#define BOOSTED_SAMPLING_RATE			(40000)
 #define LATENCY_MULTIPLIER			(1000)
 #define MIN_LATENCY_MULTIPLIER			(20)
 #define TRANSITION_LATENCY_LIMIT		(10 * 1000 * 1000)
@@ -152,9 +152,9 @@ static struct dbs_tuners {
 	.sampling_down_factor = DEF_SAMPLING_DOWN_FACTOR,
 	.down_differential = DEF_FREQUENCY_DOWN_DIFFERENTIAL,
 	.ignore_nice = 0,
-	.powersave_bias = 0,
+	.powersave_bias = 1,
 	.freq_boost_time = DEFAULT_FREQ_BOOST_TIME,
-	.boostfreq = 1400000,
+	.boostfreq = 1000000,
 	.freq_step = FREQ_STEP,
 	.freq_responsiveness = FREQ_FOR_RESPONSIVENESS
 };
