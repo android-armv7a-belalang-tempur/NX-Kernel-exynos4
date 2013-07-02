@@ -337,12 +337,15 @@ static int s3c_pm_enter(suspend_state_t state)
 	/* s3c_cpu_save will also act as our return point from when
 	 * we resume as it saves its own register state and restores it
 	 * during the resume.  */
-
+#ifdef CONFIG_CPU_EXYNOS4210
+	printk(KERN_ALERT "ARM_COREx_STATUS CORE1[0x%08x]\n",
+			__raw_readl(S5P_VA_PMU + 0x2084));
+#else
 	printk(KERN_ALERT "ARM_COREx_STATUS CORE1[0x%08x], CORE2[0x%08x], CORE3[0x%08x]\n",
 			__raw_readl(S5P_VA_PMU + 0x2084),
 			__raw_readl(S5P_VA_PMU + 0x2104),
 			__raw_readl(S5P_VA_PMU + 0x2184));
-
+#endif
 	s3c_cpu_save(0, PLAT_PHYS_OFFSET - PAGE_OFFSET);
 
 	/* restore the cpu state using the kernel's cpu init code. */
