@@ -2441,9 +2441,6 @@ static int check_modinfo(struct module *mod, struct load_info *info)
 		}
 	}
 
-	if (!get_modinfo(info, "intree"))
-		add_taint_module(mod, TAINT_OOT_MODULE);
-
 	if (get_modinfo(info, "staging")) {
 		add_taint_module(mod, TAINT_CRAP);
 		printk(KERN_WARNING "%s: module is from the staging directory,"
@@ -3203,8 +3200,6 @@ static char *module_flags(struct module *mod, char *buf)
 		buf[bx++] = '(';
 		if (mod->taints & (1 << TAINT_PROPRIETARY_MODULE))
 			buf[bx++] = 'P';
-		else if (mod->taints & (1 << TAINT_OOT_MODULE))
-			buf[bx++] = 'O';
 		if (mod->taints & (1 << TAINT_FORCED_MODULE))
 			buf[bx++] = 'F';
 		if (mod->taints & (1 << TAINT_CRAP))
