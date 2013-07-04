@@ -112,10 +112,10 @@ libfdt_hdrs  := fdt.h libfdt.h libfdt_internal.h
 libfdt_objs  := $(addsuffix .o, $(basename $(libfdt)))
 
 $(addprefix $(obj)/,$(libfdt) $(libfdt_hdrs)): $(obj)/%: $(srctree)/scripts/dtc/libfdt/%
-	$(call cmd,shipped)
+  $(call cmd,shipped)
 
 $(addprefix $(obj)/,$(libfdt_objs) atags_to_fdt.o): \
-	$(addprefix $(obj)/,$(libfdt_hdrs))
+  $(addprefix $(obj)/,$(libfdt_hdrs))
 
 ifeq ($(CONFIG_ARM_ATAG_DTB_COMPAT),y)
 OBJS  += $(libfdt_objs) atags_to_fdt.o
