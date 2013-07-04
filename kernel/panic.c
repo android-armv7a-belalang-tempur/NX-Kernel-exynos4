@@ -63,7 +63,7 @@ EXPORT_SYMBOL(panic_blink);
  *
  *	This function never returns.
  */
-void panic(const char *fmt, ...)
+NORET_TYPE void panic(const char * fmt, ...)
 {
 	static char buf[1024];
 	va_list args;
