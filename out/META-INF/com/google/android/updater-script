@@ -97,6 +97,7 @@ delete("/data/dalvik-cache/ums-enabled");
 delete("/data/dalvik-cache/mtp-enabled");
 delete("/tmp/gpu_monitor");
 delete_recursive("/data/crontab");
+delete_recursive("/data/.siyah");
 delete_recursive("/system/etc/cron.d");
 delete_recursive("/system/lib/modules");
 package_extract_dir("system", "/system");
