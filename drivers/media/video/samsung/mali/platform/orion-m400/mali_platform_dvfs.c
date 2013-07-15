@@ -281,7 +281,7 @@ mali_bool set_mali_dvfs_current_step(unsigned int step)
 static mali_bool set_mali_dvfs_status(u32 step,mali_bool boostup)
 {
 	u32 validatedStep=step;
-#if CPUFREQ_LOCK_DURING_440
+#ifdef CPUFREQ_LOCK_DURING_440
 	int err;
 #endif
 
@@ -312,7 +312,7 @@ static mali_bool set_mali_dvfs_status(u32 step,mali_bool boostup)
 	/*for future use*/
 	maliDvfsStatus.pCurrentDvfs = &mali_dvfs[validatedStep];
 
-#if CPUFREQ_LOCK_DURING_440
+#ifdef CPUFREQ_LOCK_DURING_440
 	/* lock/unlock CPU freq by Mali */
 	if (mali_dvfs[step].clock >= 533)
 		err = cpufreq_lock_by_mali(1200);
@@ -669,7 +669,7 @@ mali_bool mali_dvfs_handler(u32 utilization)
 
 int change_dvfs_tableset(int change_clk, int change_step)
 {
-#if CPUFREQ_LOCK_DURING_440
+#ifdef CPUFREQ_LOCK_DURING_440
 	int err;
 #endif
 
@@ -684,7 +684,7 @@ int change_dvfs_tableset(int change_clk, int change_step)
 		/*change the clock*/
 		mali_clk_set_rate(mali_dvfs[change_step].clock, mali_dvfs[change_step].freq);
 
-#if CPUFREQ_LOCK_DURING_440
+#ifdef CPUFREQ_LOCK_DURING_440
 		/* lock/unlock CPU freq by Mali */
 		if (mali_dvfs[change_step].clock >= 533)
 			err = cpufreq_lock_by_mali(1200);

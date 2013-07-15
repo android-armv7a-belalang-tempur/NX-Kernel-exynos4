@@ -26,7 +26,7 @@
 #define MALI_VOLTAGE_LOCK 1
 
 /* @Enable or Disable the CPU frequency lock when the GPU clock is 440 Mhz */
-#define CPUFREQ_LOCK_DURING_440 0
+// #define CPUFREQ_LOCK_DURING_440 0
 
 #ifdef __cplusplus
 extern "C" {
