@@ -54,7 +54,6 @@ static ssize_t gpu_voltage_show(struct device *dev, struct device_attribute *att
 	return len;
 }
 
-#ifdef CONFIG_GPU_VOLTAGE_WRITE_CONTROL
 static ssize_t gpu_voltage_store(struct device *dev, struct device_attribute *attr, const char *buf,
 									size_t count) {
 	unsigned int ret = -EINVAL;
@@ -80,9 +79,6 @@ static ssize_t gpu_voltage_store(struct device *dev, struct device_attribute *at
 }
 
 static DEVICE_ATTR(gpu_control, S_IRUGO | S_IWUGO, gpu_voltage_show, gpu_voltage_store);
-#else
-static DEVICE_ATTR(gpu_control, S_IRUGO, gpu_voltage_show, NULL);
-#endif
 
 // Yank555.lu : add sysfs entry to display the ASV level used to determinate the voltage
 static ssize_t asv_level_show(struct device *dev, struct device_attribute *attr, char *buf) {
@@ -93,7 +89,6 @@ static ssize_t asv_level_show(struct device *dev, struct device_attribute *attr,
 
 static DEVICE_ATTR(asv_level, S_IRUGO, asv_level_show, NULL);
 
-#ifdef CONFIG_GPU_VOLTAGE_WRITE_CONTROL
 // Yank555.lu : add voltage table reset according to ASV level and default table
 static ssize_t mali_dvfs_table_update_store(struct device *dev, struct device_attribute *attr, const char *buf,
 									size_t count) {
@@ -117,10 +112,8 @@ static ssize_t mali_dvfs_table_update_store(struct device *dev, struct device_at
 }
 
 static DEVICE_ATTR(mali_dvfs_table_update, S_IWUGO, NULL, mali_dvfs_table_update_store);
-#endif
 
 // GPU voltage steps
-#ifdef CONFIG_GPU_VOLTAGE_WRITE_CONTROL
 
 #define expose_gpu_voltage(step)									\
 static ssize_t show_gpu_voltage_##step									\
@@ -152,24 +145,6 @@ static DEVICE_ATTR(gpu_voltage_##step									\
 		 , store_gpu_voltage_##step								\
 );
 
-#else
-
-#define expose_gpu_voltage(step)									\
-static ssize_t show_gpu_voltage_##step									\
-(struct device *dev, struct device_attribute *attr, char *buf) {					\
-													\
-	return sprintf(buf, "%d\n", mali_dvfs[step].vol);						\
-													\
-}													\
-													\
-static DEVICE_ATTR(gpu_voltage_##step									\
-		 , S_IRUGO										\
-		 , show_gpu_voltage_##step								\
-		 , NULL											\
-);
-
-#endif
-
 expose_gpu_voltage(0);
 expose_gpu_voltage(1);
 expose_gpu_voltage(2);
@@ -179,9 +154,7 @@ expose_gpu_voltage(4);
 static struct attribute *gpu_voltage_control_attributes[] = {
 	&dev_attr_gpu_control.attr,
 	&dev_attr_asv_level.attr,
-#ifdef CONFIG_GPU_VOLTAGE_WRITE_CONTROL
 	&dev_attr_mali_dvfs_table_update.attr,
-#endif
 	// Yank555.lu : new GPU voltage steps interface
 	&dev_attr_gpu_voltage_0.attr,
 	&dev_attr_gpu_voltage_1.attr,
